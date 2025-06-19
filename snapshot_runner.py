@@ -11,13 +11,10 @@ def fetch_symbols():
     url = "https://fapi.binance.com/fapi/v1/ticker/24hr"
     data = requests.get(url, timeout=10).json()
     print("fetch_symbols data type:", type(data))
-    # data artık dict ise keys ya da nasıl göründüğüne bakalım
-    if isinstance(data, dict):
-        print("fetch_symbols data keys:", data.keys())
-    else:
-        print("fetch_symbols data sample:", data[:3])  # İlk 3 elemanı göster
+    if isinstance(data, dict) and "code" in data and "msg" in data:
+        print(f"API Error {data['code']}: {data['msg']}")
+        return []  # Hata varsa boş liste döndür
     return [item["symbol"] for item in data if item["symbol"].endswith("USDT")]
-
 
 def fetch_prices():
     url = "https://fapi.binance.com/fapi/v1/ticker/price"
