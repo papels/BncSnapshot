@@ -9,8 +9,12 @@ os.makedirs(DATA_DIR, exist_ok=True)
 
 def fetch_symbols():
     url = "https://fapi.binance.com/fapi/v1/ticker/24hr"
-    data = requests.get(url, timeout=10).json()
+    response = requests.get(url, timeout=10)
+    data = response.json()
+    print("fetch_symbols data type:", type(data))
+    print("fetch_symbols data sample:", data[:3])  # İlk 3 elemanı göster
     return [item["symbol"] for item in data if item["symbol"].endswith("USDT")]
+
 
 def fetch_prices():
     url = "https://fapi.binance.com/fapi/v1/ticker/price"
